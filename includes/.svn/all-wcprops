@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/!svn/ver/1387776/simple-restrict/trunk/includes
+END
+class-simple-restrict.php
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/!svn/ver/1387776/simple-restrict/trunk/includes/class-simple-restrict.php
+END
+class-simple-restrict-deactivator.php
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/!svn/ver/1387776/simple-restrict/trunk/includes/class-simple-restrict-deactivator.php
+END
+class-simple-restrict-loader.php
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/!svn/ver/1387776/simple-restrict/trunk/includes/class-simple-restrict-loader.php
+END
+class-simple-restrict-activator.php
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/!svn/ver/1387776/simple-restrict/trunk/includes/class-simple-restrict-activator.php
+END
+class-simple-restrict-i18n.php
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/!svn/ver/1387776/simple-restrict/trunk/includes/class-simple-restrict-i18n.php
+END
+index.php
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/!svn/ver/1387776/simple-restrict/trunk/includes/index.php
+END
