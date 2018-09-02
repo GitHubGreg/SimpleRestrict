@@ -42,7 +42,6 @@ class Simple_Restrict_Admin {
 
 	public $taxonomy_terms_object_array = array();
 	public $generic_restricted_message;
-	
 
 	/**
 	 * Initialize the class and set its properties.
@@ -170,9 +169,14 @@ class Simple_Restrict_Admin {
 		$current_page_permissions = array(); // Page permissions are user-defined, so we prefix them manually in next array
 		$current_page_permissions_prefixed = array();  // This array will prefix each of the page permissions
 		
+
+		// Get the post ID at the init hook
+		// https://wordpress.stackexchange.com/questions/22804/get-post-in-init-filter-or-action
+		$postID = url_to_postid( $_SERVER['REQUEST_URI'] , '_wpg_def_keyword', true );
+
 		//echo("<br />Current page's permissions:<br />");
 		// Create an array of the current page's permissions
-		$page_terms_list = wp_get_post_terms($GLOBALS['post']->ID, 'simple-restrict-permission', array("fields" => "all"));
+		$page_terms_list = wp_get_post_terms($postID, 'simple-restrict-permission', array("fields" => "all"));
 		foreach($page_terms_list as $current_term) {
 		    if(!in_array($current_term->slug, $current_page_permissions, true)){
 			    $current_term_slug = $current_term->slug;
@@ -223,19 +227,36 @@ class Simple_Restrict_Admin {
 			
 			$user_defined_restricted_message = esc_attr( get_option( 'simple_restrict_setting_one' ));
 			$user_defined_restricted_message = get_option( 'simple_restrict_setting_one' );
+			$simple_restrict_setting_redirect = get_option( 'simple_restrict_setting_redirect' );
 			// If the user's permissions don't match any of the page's permissions
 			if (!array_intersect($current_page_permissions_prefixed, $current_user_permissions)) {
+
+				// Redirect to login or display message
+				if( isset($simple_restrict_setting_redirect) && ($simple_restrict_setting_redirect == 1) ) {
+					header("Location: /wp-login.php?redirect_to=" . $_SERVER['REQUEST_URI']);
+					exit;
+				} else {
+					add_filter('the_content', array($this, 'display_message'));
+				}
+
+			} else {
+				// otherwise show the regular content
+				return $content;
+				//return 'This is a <strong>Test</strong>'
+			}
+		}
+	}
+
+	public function display_message() {
+
+			$user_defined_restricted_message = get_option( 'simple_restrict_setting_one' );
+
 				if( (isset($user_defined_restricted_message)) && ($user_defined_restricted_message != '') ) {
 					return $user_defined_restricted_message;
 				} else {
 					return $this->generic_restricted_message;
 				}
-			} else {
-				// otherwise show the regular content			
-				return $content;
-				//return 'This is a <strong>Test</strong>'
-			}	
-		}		
+
 	}
 
 	// Add new checkboxes (user meta) to profile ($user is sent to this function from action that fires it)
@@ -326,8 +347,28 @@ class Simple_Restrict_Admin {
 		$restriction_message_label = __('Restriction Message', 'simple-restrict');
 		add_settings_field('simple_restrict_field_one', $restriction_message_label, array($this, 'simple_restrict_field_one_callback'), 'simple_restrict_plugin', 'simple_restrict_section_one');
 		// So add_settings_section creates a section, add_settings_field puts a field in that section, do_settings_sections shows that section (and it's field) on the page. And each field is associated with a settings that we save using WordPress settings API and register_setting.
+
+		// Add a setting to redirect vs showing a message
+		register_setting( 'simple_restrict_settings_group', 'simple_restrict_setting_redirect' );
+		add_settings_section('simple_restrict_option_redirect_section', "Redirect vs Message", array($this, 'simple_restrict_option_redirect_message'), 'simple_restrict_plugin');
+		add_settings_field("simple_restrict_option_redirect_field", "Redirect user to login page:", array($this, 'simple_restrict_option_redirect_checkbox'), "simple_restrict_plugin", 'simple_restrict_option_redirect_section');
 	}
 	
+	// Callback for the redirect checkbox
+	public function simple_restrict_option_redirect_checkbox($args) {
+		$setting = get_option( 'simple_restrict_setting_redirect' );
+		?>
+			<input type="checkbox" name="simple_restrict_setting_redirect" value="1" <?php checked(1, get_option('simple_restrict_setting_redirect'), true); ?> />
+		<?php
+	}
+
+	// Callback for the redirect option
+	public function simple_restrict_option_redirect_message() {
+		echo('<p>');
+		_e("If this option is enabled, the user will be redirected to the login page instead of shown the Restriction Message.");
+		echo('<p>');
+	}
+
 	// Callback for the created section
 	public function simple_restrict_section_one_callback() {
 		echo('<p>');
