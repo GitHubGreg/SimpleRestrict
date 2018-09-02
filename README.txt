@@ -3,8 +3,8 @@ Contributors: awakensolutions
 Tags: restrict, hide, permission, authorization, restrict pages, hide pages, restrict content, hide content, user permission, page permission, user permissions, page
 Donate link: https://www.awakensolutions.com/donation
 Requires at least: 3.4
-Tested up to: 4.9.4
-Stable tag: 1.0.4
+Tested up to: 4.9.8
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,6 +20,8 @@ This plugin allows you to easily mark certain pages with "Permissions" and only 
 
 * **Restriction Message:** If a page has permissions assigned, the content will only be visible to users that have one of those same permissions assigned. Otherwise, the content will be replaced by a generic message or a custom message which can be defined in the plugin settings using the standard WordPress editor (including the ability to add media and formatting).
 
+* **Redirect to login:** Instead of a restriction message, you can choose to have users get redirected to the login page.
+
 
 == Installation ==
 
@@ -31,7 +33,7 @@ This plugin allows you to easily mark certain pages with "Permissions" and only 
 
 = How do I restrict access to a page? =
 
-Go to the Edit Page screen for the page you want to restrict, and find the new "Permissions" section. Create and assign a new permission (e.g. "Gold subscriber") and update your page. Now this page content will only be viewable by users who have this same permission assigned to them. 
+Go to the Edit Page screen for the page you want to restrict, and find the new "Permissions" section. Create and assign a new permission (e.g. "Gold subscriber") and update your page. Now this page content will only be viewable by users who have this same permission assigned to them.
 
 = How do I allow a user to see a restricted page? =
 
@@ -44,6 +46,10 @@ A user only needs to have one of the page permissions assigned to her/him in ord
 = What about pages with no permissions assigned to them? =
 
 They are visible to everyone.
+
+= How can I contribute to the code? =
+
+The plugin is [on GitHub](https://github.com/GitHubGreg/SimpleRestrict), feel free to submit a pull request.
 
 = What languages does this plugin support, and how can I help translate it? =
 
@@ -58,7 +64,7 @@ This plugin was released in English and French, and anyone can add additional tr
 4. Permissions being added using page Quick Edit
 5. Permissions column in the Users screen
 6. Permissions assigned on the New User screen (and permissions can be edited for existing users)
-7. Settings page where you can change the message that appears on restricted pages (including the ability to add media and formatting).
+7. Settings page where you can change the message that appears on restricted pages (including the ability to add media and formatting). Note: You can now also choose to redirect the user to the login page instead of showing the restriction message.
 
 
 == Upgrade Notice ==
@@ -84,3 +90,8 @@ This plugin was released in English and French, and anyone can add additional tr
 
 = 1.0.4 =
 * Update to show Tested up to WordPress 4.9.4
+
+= 1.1.0 =
+* Adds option to redirect user to login page instead of showing the restriction message (thanks to ClearPathDigital)
+* Updates to readme, description and FAQ to include GitHub URL.
+* Tested up to WordPress 4.9.8
