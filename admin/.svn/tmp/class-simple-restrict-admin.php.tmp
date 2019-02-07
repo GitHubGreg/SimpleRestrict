@@ -162,11 +162,114 @@ class Simple_Restrict_Admin {
 		$this->generic_restricted_message = __("Sorry, this content is restricted to users who are logged in with the correct permissions.", 'simple-restrict');
 	}
 
+<<<<<<< .mine
+	
+	// Restrict content of specific page(s)
+	public function restrict_content($content) {
+		
+		// We must prefix 'simple-restrict' to all the user metas (to not conflict with WordPress existing metas)
+		$current_user_permissions = array(); // User permissions will be prefixed by default
+		$current_page_permissions = array(); // Page permissions are user-defined, so we prefix them manually in next array
+		$current_page_permissions_prefixed = array();  // This array will prefix each of the page permissions
+		
 
+		// Get the post ID at the init hook
+		// https://wordpress.stackexchange.com/questions/22804/get-post-in-init-filter-or-action
+		$postID = url_to_postid( $_SERVER['REQUEST_URI'] , '_wpg_def_keyword', true );
 
-	// Add new checkboxes (user meta) to profile ($user is sent to this function from action that fires it). Instead of the manage_options capability, we will require the edit_users capability (as per https://wordpress.org/support/topic/permission-for-user-editors/#post-11162529)
+		//echo("<br />Current page's permissions:<br />");
+		// Create an array of the current page's permissions
+		$page_terms_list = wp_get_post_terms($postID, 'simple-restrict-permission', array("fields" => "all"));
+		foreach($page_terms_list as $current_term) {
+		    if(!in_array($current_term->slug, $current_page_permissions, true)){
+			    $current_term_slug = $current_term->slug;
+			    $current_term_slug_prefixed = 'simple-restrict-'.$current_term_slug;			    
+				array_push($current_page_permissions,$current_term->slug);
+				array_push($current_page_permissions_prefixed,$current_term_slug_prefixed);
+				
+		    }
+		}
+		// Debug 
+		/*
+		foreach($current_page_permissions as $current_page_permission) {
+			echo('Page permission: '.$current_page_permission.'<br />');
+		}
+		foreach($current_page_permissions_prefixed as $current_page_permission) {
+			echo('Page permission prefixed: '.$current_page_permission.'<br />');
+		}
+		*/
+		
+=======
+>>>>>>> .r2023809
+
+<<<<<<< .mine
+		// If the page has no permissions required, show the content and don't bother checking user
+		if(empty($current_page_permissions)) {
+			return $content;
+		// Otherwise check the user to see if it's permissions match the page's permissions
+		} else {
+			//echo("<br />Current user's permissions:<br />");
+			// Create an array of the current user's permissions by cycling through all possible page permissions and putting any matches into user permissions array
+			$current_user_id = get_current_user_id();
+			// Only populate user permissions if this is a registered user, otherwise leave permissions array empty
+			if($current_user_id != 0) {
+				foreach($this->taxonomy_terms_object_array as $taxonomy_object) {
+					$taxonomy_slug = $taxonomy_object->slug;
+					$taxonomy_slug_prefixed = 'simple-restrict-' . $taxonomy_slug;
+					if (esc_attr( get_the_author_meta( $taxonomy_slug_prefixed, $current_user_id )) == "yes") {
+						// Only add to array if it wasn't already there ($current_user_permissions values are always prefixed)
+					    if(!in_array($taxonomy_slug_prefixed, $current_user_permissions, true)){
+							array_push($current_user_permissions,$taxonomy_slug_prefixed);
+					    }
+					}
+				}
+			}
+			// Debug 
+			/*
+			foreach($current_user_permissions as $current_user_permission) {
+				echo('User permission: '.$current_user_permission.'<br />');
+			}
+			*/
+			
+			$user_defined_restricted_message = esc_attr( get_option( 'simple_restrict_setting_one' ));
+			$user_defined_restricted_message = get_option( 'simple_restrict_setting_one' );
+			$simple_restrict_setting_redirect = get_option( 'simple_restrict_setting_redirect' );
+			// If the user's permissions don't match any of the page's permissions
+			if (!array_intersect($current_page_permissions_prefixed, $current_user_permissions)) {
+
+				// Redirect to login or display message
+				if( isset($simple_restrict_setting_redirect) && ($simple_restrict_setting_redirect == 1) ) {
+					header("Location: /wp-login.php?redirect_to=" . $_SERVER['REQUEST_URI']);
+					exit;
+				} else {
+					add_filter('the_content', array($this, 'display_message'));
+				}
+
+			} else {
+				// otherwise show the regular content
+				return $content;
+				//return 'This is a <strong>Test</strong>'
+			}
+		}
+	}
+=======
+>>>>>>> .r2023809
+
+	public function display_message() {
+
+			$user_defined_restricted_message = get_option( 'simple_restrict_setting_one' );
+
+				if( (isset($user_defined_restricted_message)) && ($user_defined_restricted_message != '') ) {
+					return $user_defined_restricted_message;
+				} else {
+					return $this->generic_restricted_message;
+				}
+
+	}
+
+	// Add new checkboxes (user meta) to profile ($user is sent to this function from action that fires it)
 	public function add_permission_checkboxes( $user ) {
-		if(current_user_can('edit_users')) {
+		if(current_user_can('manage_options')) {
 	?>
 	        <h3 class="simple-restrict-permissions-title"><?php _e('Permissions', 'simple-restrict'); ?></h3>
 	        <table class="form-table simple-restrict-permissions-table">
@@ -274,6 +377,21 @@ class Simple_Restrict_Admin {
 		echo('<p>');
 	}
 
+	// Callback for the redirect checkbox
+	public function simple_restrict_option_redirect_checkbox($args) {
+		$setting = get_option( 'simple_restrict_setting_redirect' );
+		?>
+			<input type="checkbox" name="simple_restrict_setting_redirect" value="1" <?php checked(1, get_option('simple_restrict_setting_redirect'), true); ?> />
+		<?php
+	}
+
+	// Callback for the redirect option
+	public function simple_restrict_option_redirect_message() {
+		echo('<p>');
+		_e("If this option is enabled, the user will be redirected to the login page instead of shown the Restriction Message.");
+		echo('<p>');
+	}
+
 	// Callback for the created section
 	public function simple_restrict_section_one_callback() {
 		echo('<p>');
@@ -332,8 +450,7 @@ class Simple_Restrict_Admin {
 	    if( 'add-new-user' !== $type )
 	        return;
 
-		// Instead of the manage_options capability, we will require the edit_users capability (as per https://wordpress.org/support/topic/permission-for-user-editors/#post-11162529)
-		if(current_user_can('edit_users')) {
+		if(current_user_can('manage_options')) {
 		//echo('<pre>');
 		//print_r($this->taxonomy_terms_object_array);
 		//echo('<pre>');
@@ -364,8 +481,8 @@ class Simple_Restrict_Admin {
 
 	// Now save these fields from the new user form
 	public function save_custom_user_profile_fields($user_id) {
-		// again do this only if you can (again, use edit_users instead of manage_options)
-		if(!current_user_can('edit_users'))
+		// again do this only if you can
+		if(!current_user_can('manage_options'))
 			return false;
 
 		foreach($this->taxonomy_terms_object_array as $taxonomy_object) {

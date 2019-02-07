@@ -163,6 +163,12 @@ class Simple_Restrict {
 		$this->loader->add_action( 'init', $plugin_admin, 'add_custom_taxonomies' );
 		$this->loader->add_action( 'init', $plugin_admin, 'get_taxonomy_terms_object_array' );
 
+<<<<<<< .mine
+		// Check permissions and restrict content if necessary
+		$this->loader->add_action( 'init', $plugin_admin, 'restrict_content' );
+		
+=======
+>>>>>>> .r2023809
 		// Add and save checkboxes when viewing own profile (show_user_profile) and others' (edit_user_profile)
 		$this->loader->add_action( 'show_user_profile', $plugin_admin, 'add_permission_checkboxes' );
 		$this->loader->add_action( 'edit_user_profile', $plugin_admin, 'add_permission_checkboxes' );

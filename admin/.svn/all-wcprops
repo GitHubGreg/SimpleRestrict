@@ -1,13 +1,13 @@
 K 25
 svn:wc:ra_dav:version-url
 V 45
-/!svn/ver/1403062/simple-restrict/trunk/admin
+/!svn/ver/2026855/simple-restrict/trunk/admin
 END
 class-simple-restrict-admin.php
 K 25
 svn:wc:ra_dav:version-url
 V 77
-/!svn/ver/1403062/simple-restrict/trunk/admin/class-simple-restrict-admin.php
+/!svn/ver/2026855/simple-restrict/trunk/admin/class-simple-restrict-admin.php
 END
 index.php
 K 25

@@ -3,8 +3,8 @@ Contributors: awakensolutions
 Tags: restrict, hide, permission, authorization, restrict pages, hide pages, restrict content, hide content, user permission, page permission, user permissions, page
 Donate link: https://www.awakensolutions.com/donation
 Requires at least: 3.4
-Tested up to: 4.9.8
-Stable tag: 1.1.0
+Tested up to: 5.0.3
+Stable tag: 1.2.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -46,6 +46,26 @@ A user only needs to have one of the page permissions assigned to her/him in ord
 = What about pages with no permissions assigned to them? =
 
 They are visible to everyone.
+
+= Will this plugin restrict posts? =
+
+No. This plugin is only for pages.
+
+= Will this plugin restrict pages that use custom page templates? =
+
+It depends. If your page template uses the_content() to retrieve the main content, and does not loop through any posts, then yes this plugin will restrict the page. Otherwise, see the answer below.
+
+= Will this plugin restrict pages that show posts (archive pages)? =
+
+No. This plugin hides the main content of the page (the_content()). Any page template that loops through posts, be they default posts or custom post types, will continue to show those posts. A more advanced content restriction plugin (usually paid) would be required for your needs.
+
+= What WordPress user capabilities are required for the different functionalities of this plugin? =
+
+The [manage_options](https://codex.wordpress.org/Roles_and_Capabilities#manage_options) capability is required to edit plugin settings.
+
+The [edit_users](https://codex.wordpress.org/Roles_and_Capabilities#edit_users) capability is required to assign permission to users.
+
+Any user who has the rights to edit a page also has the rights to assign permissions to the page and create new permissions.
 
 = How can I contribute to the code? =
 
@@ -95,3 +115,18 @@ This plugin was released in English and French, and anyone can add additional tr
 * Adds option to redirect user to login page instead of showing the restriction message (thanks to ClearPathDigital)
 * Updates to readme, description and FAQ to include GitHub URL.
 * Tested up to WordPress 4.9.8
+
+= 1.2.0 =
+* Allows restriction of homepage
+
+= 1.2.1 =
+* Fixes a bug that caused the default restriction message to be '' (empty text) instead of the plugin's usual default.
+
+= 1.2.2 =
+* Adds compatibility with WordPress 5.0 (Gutenberg editor)
+
+= 1.2.3 =
+* Minor bug fix with Permissions column on Users page
+
+= 1.2.4 =
+* Changing the WordPress capability required for editing a user's permissions from manage_options to edit_users.

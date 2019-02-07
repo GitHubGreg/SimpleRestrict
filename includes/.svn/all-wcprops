@@ -1,13 +1,13 @@
 K 25
 svn:wc:ra_dav:version-url
 V 48
-/!svn/ver/1387776/simple-restrict/trunk/includes
+/!svn/ver/1976947/simple-restrict/trunk/includes
 END
 class-simple-restrict.php
 K 25
 svn:wc:ra_dav:version-url
 V 74
-/!svn/ver/1387776/simple-restrict/trunk/includes/class-simple-restrict.php
+/!svn/ver/1976947/simple-restrict/trunk/includes/class-simple-restrict.php
 END
 class-simple-restrict-deactivator.php
 K 25
