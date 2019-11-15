@@ -3,8 +3,8 @@ Contributors: awakensolutions
 Tags: restrict, hide, permission, authorization, restrict pages, hide pages, restrict content, hide content, user permission, page permission, user permissions, page
 Donate link: https://www.awakensolutions.com/donation
 Requires at least: 3.4
-Tested up to: 5.0.3
-Stable tag: 1.2.4
+Tested up to: 5.2.2
+Stable tag: 1.2.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -130,3 +130,6 @@ This plugin was released in English and French, and anyone can add additional tr
 
 = 1.2.4 =
 * Changing the WordPress capability required for editing a user's permissions from manage_options to edit_users.
+
+= 1.2.5 =
+* Fixes a bug that would erase user permissions when they edited their own profile.

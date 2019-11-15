@@ -16,7 +16,7 @@
  * Plugin Name:       Simple Restrict
  * Plugin URI:        http://www.awakensolutions.com/simple-restrict/
  * Description:       Restrict pages based on permissions assigned to pages and granted in user profiles.
- * Version:           1.2.4
+ * Version:           1.2.5
  * Author:            Awaken Solutions Inc.
  * Author URI:        http://www.awakensolutions.com
  * License:           GPLv2 or later

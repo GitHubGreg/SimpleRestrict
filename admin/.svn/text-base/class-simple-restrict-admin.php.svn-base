@@ -192,12 +192,13 @@ class Simple_Restrict_Admin {
 	}
 
 	// Save checkboxes (user meta) to profile ($user_id is sent to this function from action that fires it)
-	public function save_permission_checkboxes( $user_id )
-	{
-		foreach($this->taxonomy_terms_object_array as $taxonomy_object) {
-			$taxonomy_slug = $taxonomy_object->slug;
-			$taxonomy_slug_prefixed = 'simple-restrict-' . $taxonomy_slug;
-		    update_user_meta( $user_id, $taxonomy_slug_prefixed, sanitize_text_field( $_POST[$taxonomy_slug_prefixed] ) );
+	public function save_permission_checkboxes( $user_id ) {
+		if(current_user_can('edit_users')) {
+			foreach($this->taxonomy_terms_object_array as $taxonomy_object) {
+				$taxonomy_slug = $taxonomy_object->slug;
+				$taxonomy_slug_prefixed = 'simple-restrict-' . $taxonomy_slug;
+			    update_user_meta( $user_id, $taxonomy_slug_prefixed, sanitize_text_field( $_POST[$taxonomy_slug_prefixed] ) );
+			}
 		}
 	}
 
